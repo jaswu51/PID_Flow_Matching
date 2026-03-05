@@ -1,6 +1,6 @@
 # PID Flow Matching
 
-We apply PID (Proportional-Integral-Derivative) control theory to the training and sampling of Flow Matching for unconditional image generation. Our method achieves comparative or superior results compared to the paper **Improving Free-form Flow Matching with Logit-Normal Distributions** *Noam Elata, Meitar Ronen, Itai Gat, et al.* (2024).[arXiv:2403.01257](https://arxiv.org/abs/2403.01257)
+We apply PID (Proportional-Integral-Derivative) control theory to the training and sampling of Flow Matching for unconditional image generation. Our method (**PID-FM**) achieves comparative or superior results compared to the paper **Improving Free-form Flow Matching with Logit-Normal Distributions** (**FM-LN**, [arXiv:2403.01257](https://arxiv.org/abs/2403.01257)). Notably, further combining our PID-based approach with Logit-Normal distributions (**PID-FM-LN**) yields the best overall performance, demonstrating that trajectory-level control and time-step scheduling are highly complementary.
 
 **FID ↓**
 
