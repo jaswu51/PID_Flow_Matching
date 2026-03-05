@@ -1,7 +1,30 @@
 # PID Flow Matching
 
-Applying PID (Proportional-Integral-Derivative) control theory to Flow Matching training and sampling for unconditional image generation.
+We apply PID (Proportional-Integral-Derivative) control theory to the training and sampling of Flow Matching for unconditional image generation. Our method achieves comparative or superior results compared to the paper **Improving Free-form Flow Matching with Logit-Normal Distributions** *Noam Elata, Meitar Ronen, Itai Gat, et al.* (2024).[arXiv:2403.01257](https://arxiv.org/abs/2403.01257)
 
+**FID ↓**
+
+| NFE | FM    | FM-LN | PID-FM(Ours) |
+|-----|-------|-------|--------|
+| 1   | 237.1 | 230.2 | **229.3**  |
+| 2   | 121.3 | **95.6**  | 110.0  |
+| 5   | 50.8  | **34.7**  | 38.3   |
+| 10  | 33.0  | **18.4**  | 19.9   |
+| 20  | 26.0  | **12.8**  | 13.2   |
+| 50  | 22.5  | 9.7   | **9.3**    |
+
+**KID ↓ (×10⁻³)**
+
+| NFE | FM    | FM-LN | PID-FM(Ours) |
+|-----|-------|-------|--------|
+| 1   | 250.8 | 264.5 | **240.0**  |
+| 2   | 108.0 | **88.7**  | 100.9  |
+| 5   | 37.0  | **32.1**  | 33.6   |
+| 10  | 19.6  | **16.2**  | 17.3   |
+| 20  | 11.6  | **10.1**  | 10.2   |
+| 50  | 6.7   | 5.6   | **5.2**    |
+
+    
 **Task:** Unconditional CelebA 64×64 generation
 **Model:** DiT-S/4 (~33M parameters)
 **Platform:** Modal (A100 GPU, ~8–9 GPU-hours per training run)
@@ -41,21 +64,6 @@ PID_Flow_Matching/
 │   └── utils/ema.py              # Exponential Moving Average
 └── environments/requirements.txt
 ```
-
-### Config Reference
-
-| File | Model | t-schedule | PID |
-|------|-------|-----------|-----|
-| `configs/fm.yaml` | FM | uniform | none |
-| `configs/fm-ln.yaml` | FM-LN | logit-normal (μ=0, σ=1) | none |
-| `configs/pid-fm.yaml` | PID-FM | uniform | kp=0.5, ki=0.1, kd=0.05 |
-| `configs/pid-fm-ln.yaml` | **PID-FM-LN** | logit-normal (μ=0, σ=1) | kp=0.5, ki=0.1, kd=0.05 |
-| `configs/pid-fm-ln-P0.yaml` | ablation P=0 | logit-normal | kp=0 |
-| `configs/pid-fm-ln-P5x.yaml` | ablation P×5 | logit-normal | kp=2.5 |
-| `configs/pid-fm-ln-I0.yaml` | ablation I=0 | logit-normal | ki=0 |
-| `configs/pid-fm-ln-I5x.yaml` | ablation I×5 | logit-normal | ki=0.5 |
-| `configs/pid-fm-ln-D0.yaml` | ablation D=0 | logit-normal | kd=0 |
-| `configs/pid-fm-ln-D5x.yaml` | ablation D×5 | logit-normal | kd=0.25 |
 
 ---
 
