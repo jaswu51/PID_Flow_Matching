@@ -1,0 +1,56 @@
+data:
+  dataset: "celeba"
+  root: "./data/celeba-subset"
+  from_hub: true
+  repo_name: "electronickale/cmu-10799-celeba64-subset"
+  image_size: 64
+  channels: 3
+  num_workers: 4
+  pin_memory: true
+  augment: true
+
+model:
+  type: "dit"
+  dit_variant: "DiT-S"
+  patch_size: 4
+  mlp_ratio: 4.0
+
+training:
+  batch_size: 128
+  learning_rate: 0.0001
+  weight_decay: 0.01
+  betas: [0.9, 0.999]
+  ema_decay: 0.9999
+  ema_start: 5000
+  gradient_clip_norm: 1.0
+  num_iterations: 200000
+  log_every: 100
+  sample_every: 5000
+  save_every: 10000
+  num_samples: 64
+
+rectified_flow:
+  num_steps: 50
+  t_epsilon: 1.0e-5
+
+sampling:
+  num_steps: 50
+  sampler: "rectified_flow"
+
+infrastructure:
+  seed: 42
+  device: "cuda"
+  num_gpus: 1
+  mixed_precision: true
+  compile_model: false
+
+checkpoint:
+  dir: "./checkpoints"
+  resume: null
+
+logging:
+  dir: "./logs"
+  wandb:
+    enabled: true
+    project: "cmu-10799-diffusion"
+    entity: null

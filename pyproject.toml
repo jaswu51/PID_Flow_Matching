@@ -1,0 +1,46 @@
+[project]
+name = "cmu-10799-diffusion"
+version = "0.1.0"
+description = "Educational implementation of DDPM and Flow Matching for CMU 10-799"
+readme = "README.md"
+requires-python = ">=3.10"
+license = {text = "MIT"}
+
+dependencies = [
+    "torch>=2.0.0",
+    "torchvision>=0.15.0",
+    "numpy>=1.21.0",
+    "pillow>=9.0.0",
+    "PyYAML>=6.0",
+    "einops>=0.6.0",
+    "tqdm>=4.64.0",
+    "scipy>=1.9.0",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=7.0.0",
+    "black>=23.0.0",
+    "ruff>=0.1.0",
+]
+wandb = [
+    "wandb>=0.13.0",
+]
+datasets = [
+    "datasets>=2.0.0",
+    "huggingface-hub>=0.16.0",
+]
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src"]
+
+[tool.ruff]
+line-length = 100
+select = ["E", "F", "I", "W"]
+
+[tool.black]
+line-length = 100

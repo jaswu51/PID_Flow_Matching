@@ -1,0 +1,73 @@
+data:
+  dataset: "celeba"
+  root: "./data/celeba-subset"
+  from_hub: true
+  repo_name: "electronickale/cmu-10799-celeba64-subset"
+  image_size: 64
+  channels: 3
+  num_workers: 4
+  pin_memory: true
+  augment: true
+
+model:
+  type: "dit"
+  dit_variant: "DiT-S"
+  patch_size: 4
+  mlp_ratio: 4.0
+
+training:
+  batch_size: 128
+  learning_rate: 0.0001
+  weight_decay: 0.01
+  betas: [0.9, 0.999]
+  ema_decay: 0.9999
+  ema_start: 5000
+  gradient_clip_norm: 1.0
+  num_iterations: 200000
+  log_every: 100
+  sample_every: 5000
+  save_every: 10000
+  num_samples: 64
+
+pid_flow_matching:
+  num_steps: 50
+  t_epsilon: 1.0e-5
+
+  t_schedule: "logit_normal"
+  logit_normal_mean: 0.0
+  logit_normal_std: 1.0
+
+  # D×5: scale derivative term 5x (D_eff = 0.00125)
+  # P and I held at baseline values
+  kp: 0.5      # P_eff = 0.010 (baseline)
+  ki: 0.1      # I_eff = 0.001 (baseline)
+  kd: 0.05
+
+  sigma_p: 0.02    # baseline
+  sigma_i: 0.01    # baseline
+  sigma_d: 0.025   # 5x baseline (0.005 -> 0.025), D_eff = 0.00125
+
+  pid_training: true
+  pid_sampling: true
+
+sampling:
+  num_steps: 50
+  sampler: "pid_flow_matching"
+
+infrastructure:
+  seed: 42
+  device: "cuda"
+  num_gpus: 1
+  mixed_precision: true
+  compile_model: false
+
+checkpoint:
+  dir: "./checkpoints"
+  resume: null
+
+logging:
+  dir: "./logs"
+  wandb:
+    enabled: true
+    project: "cmu-10799-pid-ablation"
+    entity: null
