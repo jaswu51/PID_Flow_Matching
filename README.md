@@ -274,7 +274,8 @@ Given a training pair $(x_0, x_1)$ and sampled $t$, compute the ideal interpolan
 
 $$\delta_P = \mathcal{N}(0, I) \cdot \sigma_P \cdot \sqrt{t(1-t) + \epsilon}$$
 
-$$\delta_I = \text{smooth}\!\left(\mathcal{N}(0, I)\right) \cdot \sigma_I \cdot t$$
+$$\delta_I = \text{smooth}\left(\mathcal{N}(0, I)\right) \cdot \sigma_I \cdot t$$
+
 
 $$\delta_D = \mathcal{N}(0, I) \cdot \sigma_D$$
 
@@ -316,8 +317,8 @@ Only the effective strength $k \cdot \sigma$ matters for training — $k$ and $\
 
 | Parameter | Value | Effective strength |
 |-----------|-------|--------------------|
-| $k_P = 0.5$,\ \ $\sigma_P = 0.02$ | | $P_\text{eff} = 0.010$ |
-| $k_I = 0.1$,\ \ $\sigma_I = 0.01$ | | $I_\text{eff} = 0.001$ |
+| $k_P = 0.5$, $\sigma_P = 0.02$ | | $P_\text{eff} = 0.010$ |
+| $k_I = 0.1$, $\sigma_I = 0.01$ | | $I_\text{eff} = 0.001$ |
 | $k_D = 0.05$, $\sigma_D = 0.005$ | | $D_\text{eff} = 2.5 \times 10^{-4}$ |
 | $t$-schedule: logit-normal | $\mu=0$, $\sigma=1$ | |
 
@@ -325,18 +326,6 @@ The $P : I : D$ effective strength ratio $40 : 4 : 1$ reflects the typical hiera
 
 **Result:** FID $22.5 \to 9.3$ at NFE=50 with uniform $t$ (−59%).
 
----
-
-### Summary Comparison
-
-| Model | t-sampling | PID training | Closed-loop sampling | FID@50 |
-|-------|-----------|--------------|----------------------|--------|
-| FM | uniform | — | — | 22.5 |
-| FM-LN | logit-normal ($\mu=0, \sigma=1$) | — | — | 9.7 |
-| PID-FM | uniform | yes | yes | 9.3 |
-| **PID-FM-LN** | logit-normal ($\mu=0, \sigma=1$) | yes | yes | **8.1** |
-
-FM-LN and PID-FM target independent failure modes (training distribution vs. inference robustness), so combining them is approximately additive: **PID-FM-LN achieves FID=8.1, a −64% improvement over FM**.
 
 ---
 
